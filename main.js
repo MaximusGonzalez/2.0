@@ -1,9 +1,5 @@
-import GameOver from "./public/assets/scenes/GameOver.js";
-import Win from "./public/assets/scenes/Win.js";
 import Game from "./public/assets/scenes/game.js";
 import Preload from "./public/assets/scenes/preloader.js";
-import Start from "./public/assets/scenes/Start.js";
-
 // Create a new Phaser config object
 const config = {
   type: Phaser.AUTO,
@@ -25,13 +21,13 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 20 },
-      debug: false,
+      debug: true,
     },
   },
   // List of scenes to load
   // Only the first scene will be shown
   // Remember to import the scene before adding it to the list
-  scene: [Preload, Game, GameOver, Win, Start],
+  scene: [Preload, Game],
   zoom: 1
 };
 

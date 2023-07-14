@@ -1,6 +1,3 @@
-import { SHAPES } from '../../../utils.js';
-const { TRIANGLE, SQUARE, DIAMOND} = SHAPES;
-
 export default class Preload extends Phaser.Scene {
   constructor() {
     super("preload");
@@ -14,9 +11,9 @@ export default class Preload extends Phaser.Scene {
       "Background Props",
       "./public/assets/images/Background Props.png"
     );
-    this.load.image(SQUARE, "./public/assets/images/enemy1.png");
-    this.load.image(DIAMOND, "./public/assets/images/enemy1.png");
-    this.load.image(TRIANGLE, "./public/assets/images/enemy1.png");
+    this.load.image("enemy1", "./public/assets/images/enemy1.png");
+    this.load.image("enemy2", "./public/assets/images/enemy2.png");
+    this.load.image("triangle", "./public/assets/images/triangle.png");
     this.load.image("Base Color", "./public/assets/images/Base Color.png");
     this.load.image("Buildings", "./public/assets/images/Buildings.png");
     this.load.image("Frontal Fog", "./public/assets/images/Frontal Fog.png");
@@ -57,7 +54,7 @@ export default class Preload extends Phaser.Scene {
       repeat: -1,
     });
   
-    this.scene.start('Start')
+    this.scene.start('game')
 
   }
 }

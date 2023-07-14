@@ -1,30 +1,19 @@
-import { SHAPES, POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START } from '../../../utils.js';
-const { TRIANGLE, SQUARE, DIAMOND} = SHAPES;
-
 export default class Game extends Phaser.Scene {
   constructor() {
     super("game");
   }
 
-  init() {
-    this.shapesRecolected = {
-      [TRIANGLE]: { count: 0, score: 10},
-      [SQUARE]: { count: 0, score: 20 },
-      [DIAMOND]: { count: 0, score: 30 },
-    };
-    console.log(this.shapesRecolected)
-  }
-
   create() {
 
-    this.shapesGroup = this.physics.add.group();
-    // this.shapesGroup.create(100, 0, 'diamond');
-    // this.shapesGroup.create(200, 0, 'triangle');
-    // this.shapesGroup.create(300, 0, 'square');
-    // create event to add shapes
     this.time.addEvent({
       delay: 500,
-      callback: this.addShape,
+      callback: this.spawn1,
+      callbackScope: this,
+      loop: true,
+    });
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.spawn2,
       callbackScope: this,
       loop: true,
     });
@@ -91,22 +80,43 @@ export default class Game extends Phaser.Scene {
       allowGravity: false,
     });
 
+    this.enemy1 = this.physics.add.group({
+      allowGravity: false,
+    })
+    this.enemy2 = this.physics.add.group({
+      allowGravity: false,
+    })
+
     //this.zombie.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.physics.add.collider(this.player, backgroundLayer6);
     this.physics.add.overlap(
-      this.shapesGroup,
+      this.enemy2,
       this.bullets,
-      this.reduce,
+      this.reduce2,
       null,
       this
     );
     this.physics.add.overlap(
-      this.shapesGroup,
+      this.enemy1,
+      this.bullets,
+      this.reduce1,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.enemy2,
       platforms,
-      this.killshapes,
+      this.killenemy2,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.enemy1,
+      platforms,
+      this.killenemy1,
       null,
       this
     );
@@ -118,9 +128,16 @@ export default class Game extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(
-      this.shapesGroup,
+      this.enemy1,
       this.player,
-      this.gameover,
+      this.gameover1,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.enemy2,
+      this.player,
+      this.gameover2,
       null,
       this
     );
@@ -135,9 +152,6 @@ export default class Game extends Phaser.Scene {
     //);
 
     this.cameras.main.startFollow(this.player);
-
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
     this.cameras.main.setViewport(0, 0, 240, 300);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -164,9 +178,16 @@ export default class Game extends Phaser.Scene {
         speed
       );
       this.physics.add.overlap(
-        this.shapesGroup,
+        this.enemy2,
         this.bullets,
-        this.reduce,
+        this.reduce2,
+        null,
+        this
+      );
+      this.physics.add.overlap(
+        this.enemy1,
+        this.bullets,
+        this.reduce1,
         null,
         this
       );
@@ -213,44 +234,68 @@ export default class Game extends Phaser.Scene {
     //}
   }
 
-  addShape() {
-    // get random shape
-    const randomShape = Phaser.Math.RND.pick([DIAMOND, SQUARE, TRIANGLE]);
-
-    // get random position x
+  spawn1() {
     const randomX = Phaser.Math.RND.between(0, 240);
 
-    // add shape to screen
-    this.shapesGroup.create(randomX, 0, randomShape)
+    this.enemy1.create(randomX, 0, "enemy1")
       .setCircle(16, 0, 0)
       .setBounce(0.8)
-      .setData(POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START);
+      .setData("life", 3);
+    this.enemy1.setVelocityY(60);
 
-    console.log("shape is added", randomX, randomShape);
   }
 
-  reduce(shape, bullet){
-    const newPercentage = shape.getData(POINTS_PERCENTAGE) - 0.45;
-    shape.setData(POINTS_PERCENTAGE, newPercentage);
-    if (newPercentage <= 0) {
-      shape.destroy(true, true);
+  spawn2() {
+    const randomX = Phaser.Math.RND.between(0, 240);
+
+    this.enemy2.create(randomX, 0, "enemy2")
+      .setScale(1)
+      .setCircle(16, 0, 0)
+      .setBounce(0.8)
+      .setData("life", 10);
+    this.enemy2.setVelocityY(200);
+
+  }
+
+
+  reduce2(enemy2, bullet){
+    const lifeleft = enemy2.getData("life") - 1;
+    enemy2.setData("life", lifeleft);
+    if (lifeleft <= 0) {
+      enemy2.destroy(true, true);
+      bullet.destroy(true, true);
+      return;
+    }
+    bullet.destroy();
+  }
+  reduce1(enemy1, bullet){
+    const lifeleft = enemy1.getData("life") - 1;
+    enemy1.setData("life", lifeleft);
+    if (lifeleft <= 0) {
+      enemy1.destroy(true, true);
       bullet.destroy(true, true);
       return;
     }
     bullet.destroy();
   }
   
-  killshapes(shape, platforms) {
-  shape.destroy();
+  killenemy2(enemy2, platforms) {
+  enemy2.destroy();
+  }
+  killenemy1(enemy1, platforms) {
+    enemy1.destroy();
   }
 
   killbullet(bullet, platforms) {
   bullet.destroy();
   }
 
-  gameover(shape, player) {
+  gameover2(enemy2, player) {
     this.scene.start("GameOver");
-    }
+  }
+  gameover1(enemy1, player) {
+    this.scene.start("GameOver");
+  }
 
   onSecond(){
     this.timer--;
