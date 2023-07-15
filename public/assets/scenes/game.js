@@ -56,8 +56,6 @@ export default class Game extends Phaser.Scene {
       (obj) => obj.name === "personaje"
     );
 
-    let platforms = this.physics.add.staticGroup();
-    platforms.create(120, 433, "deleter").setScale(1).refreshBody();
 
    // const zombieSpawn = map.findObject(
     //  "objetos1",
@@ -106,23 +104,23 @@ export default class Game extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.enemy2,
-      platforms,
+      backgroundLayer6,
       this.killenemy2,
       null,
       this
     );
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.enemy1,
-      platforms,
+      backgroundLayer6,
       this.killenemy1,
       null,
       this
     );
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.bullets,
-      platforms,
+      backgroundLayer6,
       this.killbullet,
       null,
       this
@@ -214,24 +212,33 @@ export default class Game extends Phaser.Scene {
     //move left
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-200);
-      this.player.anims.play("left", true);
     }
     //move right
     else if (this.cursors.right.isDown) {
       this.player.setVelocityX(200);
-      this.player.anims.play("right", true);
     }
     //stop
-    else {
+    else if (this.player.body.blocked.down) {
       this.player.setVelocityX(0);
-      this.player.anims.play("turn", true);
     }
 
     //jump
-    //if (this.cursors.up.isDown && this.player.body.blocked.down) {
-     // this.player.setVelocityY(-500);
-     // this.player.anims.play("jump", true);
-    //}
+    if (this.cursors.up.isDown && this.player.body.blocked.down) {
+     this.player.setVelocityY(-500);
+    }
+    //movement animations
+    if (this.cursors.left.isDown && this.player.body.blocked.down) {
+      this.player.anims.play("left", true);
+    }
+    else if (this.cursors.right.isDown && this.player.body.blocked.down) {
+      this.player.anims.play("right", true);
+    }
+    else if (this.player.body.blocked.down) {
+      this.player.anims.play("turn", true);
+    }
+    else {
+      this.player.anims.play("jump", true);
+    }
   }
 
   spawn1() {
@@ -279,14 +286,14 @@ export default class Game extends Phaser.Scene {
     bullet.destroy();
   }
   
-  killenemy2(enemy2, platforms) {
+  killenemy2(enemy2, backgroundLayer6) {
   enemy2.destroy();
   }
-  killenemy1(enemy1, platforms) {
+  killenemy1(enemy1, backgroundLayer6) {
     enemy1.destroy();
   }
 
-  killbullet(bullet, platforms) {
+  killbullet(bullet, backgroundLayer6) {
   bullet.destroy();
   }
 
