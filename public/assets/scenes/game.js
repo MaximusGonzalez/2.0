@@ -139,6 +139,13 @@ export default class Game extends Phaser.Scene {
       null,
       this
     );
+    this.physics.add.overlap(
+      this.enemy1,
+      this.enemy1,
+      this.spawn1change,
+      null,
+      this
+    );
 
     //this.physics.add.collider(this.zombie, backgroundLayer6);
     //this.physics.add.overlap(
@@ -242,10 +249,23 @@ export default class Game extends Phaser.Scene {
   }
 
   spawn1() {
-    const randomX = Phaser.Math.RND.between(0, 240);
+    const randomX = Phaser.Math.RND.between(16, 224);
 
     this.enemy1.create(randomX, 0, "enemy1")
-      .setCircle(16, 0, 0)
+    .setSize(32, 32)
+      .setBounce(0.8)
+      .setData("life", 3);
+    this.enemy1.setVelocityY(60);
+
+  }
+  spawn1change(enemy1) {
+
+    enemy1.destroy(true, true);
+
+    const randomX = Phaser.Math.RND.between(16, 224);
+
+    this.enemy1.create(randomX, 0, "enemy1")
+      .setSize(32, 32)
       .setBounce(0.8)
       .setData("life", 3);
     this.enemy1.setVelocityY(60);
@@ -253,7 +273,7 @@ export default class Game extends Phaser.Scene {
   }
 
   spawn2() {
-    const randomX = Phaser.Math.RND.between(0, 240);
+    const randomX = Phaser.Math.RND.between(16, 224);
 
     this.enemy2.create(randomX, 0, "enemy2")
       .setScale(1)
