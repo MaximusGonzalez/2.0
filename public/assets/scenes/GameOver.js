@@ -6,7 +6,7 @@ export default class GameOver extends Phaser.Scene {
         this.add.image(135, 160,"gameover")
             .setScale(4)
             .setInteractive()
-            .on('pointerdown', () => this.scene.start('game')); ;
+            .on('pointerdown', () => this.scene.start('nivel3')); ;
         this.scoreText = this.add.text(35, 220, "Haz clic para", {
             fontSize: "20px",
             fontStyle: "bold",

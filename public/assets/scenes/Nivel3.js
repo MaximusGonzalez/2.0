@@ -1,6 +1,6 @@
-export default class Game extends Phaser.Scene {
+export default class nivel3 extends Phaser.Scene {
   constructor() {
-    super("game");
+    super("nivel3");
   }
 
   create() {
@@ -11,9 +11,17 @@ export default class Game extends Phaser.Scene {
       callbackScope: this,
       loop: true,
     });
+
     this.time.addEvent({
       delay: 1000,
       callback: this.spawn2,
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.time.addEvent({
+      delay: 4000,
+      callback: this.spawn3,
       callbackScope: this,
       loop: true,
     });
@@ -66,13 +74,9 @@ export default class Game extends Phaser.Scene {
     this.player = this.physics.add
       .sprite(spawnPoint.x, spawnPoint.y, "dude")
       .setCollideWorldBounds(true)
-      .setBounce(0.1);
-    //this.zombie = this.physics.add.sprite(
-    //  zombieSpawn.x,
-     // zombieSpawn.y,
-     // "Zombie"
-   // );
-
+      .setSize(22, 25)
+      .setOffset(5, 13)
+      
     this.bullets = this.physics.add.group({
       inmovable: true,
       allowGravity: false,
@@ -84,12 +88,23 @@ export default class Game extends Phaser.Scene {
     this.enemy2 = this.physics.add.group({
       allowGravity: false,
     })
-
-    //this.zombie.setCollideWorldBounds(true);
+    this.enemy3right = this.physics.add.group({
+      allowGravity: false,
+    })
+    this.enemy3left = this.physics.add.group({
+      allowGravity: false,
+    })
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.physics.add.collider(this.player, backgroundLayer6);
+    this.physics.add.overlap(
+      this.enemy1,
+      this.bullets,
+      this.reduce1,
+      null,
+      this
+    );
     this.physics.add.overlap(
       this.enemy2,
       this.bullets,
@@ -98,9 +113,16 @@ export default class Game extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(
-      this.enemy1,
+      this.enemy3right,
       this.bullets,
-      this.reduce1,
+      this.reduce3right,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.enemy3left,
+      this.bullets,
+      this.reduce3left,
       null,
       this
     );
@@ -140,21 +162,19 @@ export default class Game extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(
-      this.enemy1,
-      this.enemy1,
-      this.spawn1change,
+      this.enemy3right,
+      this.player,
+      this.gameover3right,
       null,
       this
     );
-
-    //this.physics.add.collider(this.zombie, backgroundLayer6);
-    //this.physics.add.overlap(
-     // this.zombie,
-    //  this.bullets,
-     // this.dañoZombie,
-    //  null,
-    //  this
-    //);
+    this.physics.add.overlap(
+      this.enemy3left,
+      this.player,
+      this.gameover3left,
+      null,
+      this
+    );
 
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setViewport(0, 0, 240, 300);
@@ -167,7 +187,8 @@ export default class Game extends Phaser.Scene {
       let bullet = this.physics.add
         .image(this.player.x, this.player.y -18, "Bullet")
         .setScale(1)
-        .setCircle(4, 0.5, 0.5);
+        .setCircle(4, 0.5, 0.5)
+        setTimeout(() => bullet.destroy(), 2000);
 
       // DEMO: to shoot in a straightline, just comment the following line in
 
@@ -181,6 +202,20 @@ export default class Game extends Phaser.Scene {
         this.input.mousePointer.x,
         this.input.mousePointer.y + 180,
         speed
+      );
+      this.physics.add.overlap(
+        this.enemy3right,
+        this.bullets,
+        this.reduce3right,
+        null,
+        this
+      );
+      this.physics.add.overlap(
+        this.enemy3left,
+        this.bullets,
+        this.reduce3left,
+        null,
+        this
       );
       this.physics.add.overlap(
         this.enemy2,
@@ -201,20 +236,14 @@ export default class Game extends Phaser.Scene {
 
     // add timer
     this.timer = 30;
-    this.timerText = this.add.text(20, 250, "Sobrevive otros " + this.timer + " segundos.", {
+    this.timerText = this.add.text(10, 290, "Sobrevive otros " + this.timer + " segundos.", {
+      fontFamily: "Arial",
       fontSize: "12px",
-      fontStyle: "bold",
       fill: "#FFFFFF",
     });
   }
 
   update() {
-
-    if (
-      this.timer <= 0
-    ) {
-      this.scene.start("Win")
-    }
 
     //move left
     if (this.cursors.left.isDown) {
@@ -254,21 +283,8 @@ export default class Game extends Phaser.Scene {
     this.enemy1.create(randomX, 0, "enemy1")
     .setSize(32, 32)
       .setBounce(0.8)
-      .setData("life", 3);
-    this.enemy1.setVelocityY(60);
-
-  }
-  spawn1change(enemy1) {
-
-    enemy1.destroy(true, true);
-
-    const randomX = Phaser.Math.RND.between(16, 224);
-
-    this.enemy1.create(randomX, 0, "enemy1")
-      .setSize(32, 32)
-      .setBounce(0.8)
-      .setData("life", 3);
-    this.enemy1.setVelocityY(60);
+      .setData("life", 2);
+    this.enemy1.setVelocityY(70);
 
   }
 
@@ -284,7 +300,48 @@ export default class Game extends Phaser.Scene {
 
   }
 
+  spawn3() {
+    const random = Phaser.Math.RND.between(1, 4);
 
+    if (random == 2) {
+      this.enemy3left.create(-32, 416, "enemy3left")
+      .setScale(1)
+      .setCircle(16, 0, 0)
+      .setBounce(0.8)
+      .setData("life", 1);
+    this.enemy3left.setVelocityX(100);
+    }
+    else {
+      this.enemy3right.create(240, 416, "enemy3right")
+      .setScale(1)
+      .setCircle(16, 0, 0)
+      .setBounce(0.8)
+      .setData("life", 1);
+      this.enemy3right.setVelocityX(-100);
+    }
+
+  }
+
+  reduce3right(enemy3right, bullet){
+    const lifeleft = enemy3right.getData("life") - 1;
+    enemy3right.setData("life", lifeleft);
+    if (lifeleft <= 0) {
+      enemy3right.destroy(true, true);
+      bullet.destroy(true, true);
+      return;
+    }
+    bullet.destroy();
+  }
+  reduce3left(enemy3left, bullet){
+    const lifeleft = enemy3left.getData("life") - 1;
+    enemy3left.setData("life", lifeleft);
+    if (lifeleft <= 0) {
+      enemy3left.destroy(true, true);
+      bullet.destroy(true, true);
+      return;
+    }
+    bullet.destroy();
+  }
   reduce2(enemy2, bullet){
     const lifeleft = enemy2.getData("life") - 1;
     enemy2.setData("life", lifeleft);
@@ -303,7 +360,7 @@ export default class Game extends Phaser.Scene {
       bullet.destroy(true, true);
       return;
     }
-    bullet.destroy();
+    else {bullet.destroy();}
   }
   
   killenemy2(enemy2, backgroundLayer6) {
@@ -312,11 +369,16 @@ export default class Game extends Phaser.Scene {
   killenemy1(enemy1, backgroundLayer6) {
     enemy1.destroy();
   }
-
   killbullet(bullet, backgroundLayer6) {
   bullet.destroy();
   }
 
+  gameover3right(enemy3right, player) {
+    this.scene.start("GameOver");
+  }
+  gameover3left(enemy3left, player) {
+    this.scene.start("GameOver");
+  }
   gameover2(enemy2, player) {
     this.scene.start("GameOver");
   }
@@ -331,7 +393,4 @@ export default class Game extends Phaser.Scene {
     this.scene.start("Win");
     }
   }
-  //dañoZombie(zombie, bullet) {
- //   bullet.destroy();
-  //}
 }
