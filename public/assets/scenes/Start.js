@@ -4,8 +4,7 @@ export default class Start extends Phaser.Scene {
     }
     create(){
       this.add.image(115, 160,"logo")
-      .setScale(1)
-      .setInteractive()
+      .setScale(1);
 
       const jugar = this.add.image(180, 260, "jugar").setScale(0.5);
       jugar.setInteractive();
