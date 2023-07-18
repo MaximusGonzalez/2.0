@@ -1,6 +1,6 @@
-export default class nivel3 extends Phaser.Scene {
+export default class Infinito extends Phaser.Scene {
   constructor() {
-    super("nivel3");
+    super("Infinito");
   }
 
   create() {
@@ -235,14 +235,13 @@ export default class nivel3 extends Phaser.Scene {
     });
 
     // add timer
-    this.timer = 30;
-    this.timerText = this.add.text(10, 290, "Sobrevive otros " + this.timer + " segundos.", {
+    
+    this.score = 0;
+    this.scoreText = this.add.text(10, 290, "Sobrevive otros " + this.timer + " segundos.", {
       fontFamily: "Arial",
       fontSize: "12px",
       fill: "#FFFFFF",
     });
-    
-    this.stage = 3;
 
   }
 
@@ -278,6 +277,9 @@ export default class nivel3 extends Phaser.Scene {
     else {
       this.player.anims.play("jump", true);
     }
+
+    this.scoreText.setText("Puntaje: " + this.score,);
+    
   }
 
   spawn1() {
@@ -329,6 +331,7 @@ export default class nivel3 extends Phaser.Scene {
     const lifeleft = enemy3right.getData("life") - 1;
     enemy3right.setData("life", lifeleft);
     if (lifeleft <= 0) {
+      this.score = this.score + 2
       enemy3right.destroy(true, true);
       bullet.destroy(true, true);
       return;
@@ -339,6 +342,7 @@ export default class nivel3 extends Phaser.Scene {
     const lifeleft = enemy3left.getData("life") - 1;
     enemy3left.setData("life", lifeleft);
     if (lifeleft <= 0) {
+      this.score = this.score + 2
       enemy3left.destroy(true, true);
       bullet.destroy(true, true);
       return;
@@ -359,6 +363,7 @@ export default class nivel3 extends Phaser.Scene {
     const lifeleft = enemy1.getData("life") - 1;
     enemy1.setData("life", lifeleft);
     if (lifeleft <= 0) {
+      this.score = this.score + 1
       enemy1.destroy(true, true);
       bullet.destroy(true, true);
       return;
@@ -377,33 +382,27 @@ export default class nivel3 extends Phaser.Scene {
   }
 
   gameover3right(enemy3right, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
+    this.scene.start("FinalScore", {
+      score: this.score,
     });
   }
   gameover3left(enemy3left, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
+    this.scene.start("FinalScore", {
+      score: this.score,
     });
   }
   gameover2(enemy2, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
+    this.scene.start("FinalScore", {
+      score: this.score,
     });
   }
   gameover1(enemy1, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
+    this.scene.start("FinalScore", {
+      score: this.score,
     });
   }
 
   onSecond(){
-    this.timer--;
-    this.timerText.setText("Sobrevive otros " + this.timer + " segundos.",);
-    if(this.timer <= 0){
-    this.scene.start("Win", {
-      stage: this.stage,
-    });
-    }
+    this.score++;
   }
 }

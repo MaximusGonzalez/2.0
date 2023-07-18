@@ -22,8 +22,6 @@ export default class Preload extends Phaser.Scene {
     this.load.image("gameover", "./public/assets/images/gameover.png");
     this.load.image("logo", "./public/assets/images/logo.png");
     this.load.image("win", "./public/assets/images/win.png");
-    this.load.image("arrowright", "./public/assets/images/FlechaDerecha.png");
-    this.load.image("arrowleft", "./public/assets/images/FlechaIzquierda.png");
     this.load.image("enemy3right", "./public/assets/images/enemy3right.png");
     this.load.image("enemy3left", "./public/assets/images/enemy3left.png");
     this.load.image("jugar", "./public/assets/images/boton-jugar.png");
@@ -33,6 +31,7 @@ export default class Preload extends Phaser.Scene {
     this.load.image("niveles", "./public/assets/images/boton-niveles.png");
     this.load.image("reintentar", "./public/assets/images/boton-reintentar.png");
     this.load.image("infinito", "./public/assets/images/boton-infinito.png");
+    this.load.image("PuntajeFinal", "./public/assets/images/PuntajeFinal.png");
 
     this.load.spritesheet("dude", "./public/assets/images/dude.png", {
       frameWidth: 32,

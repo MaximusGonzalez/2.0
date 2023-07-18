@@ -1,6 +1,6 @@
-export default class nivel3 extends Phaser.Scene {
+export default class Nivel2 extends Phaser.Scene {
   constructor() {
-    super("nivel3");
+    super("nivel2");
   }
 
   create() {
@@ -15,13 +15,6 @@ export default class nivel3 extends Phaser.Scene {
     this.time.addEvent({
       delay: 1000,
       callback: this.spawn2,
-      callbackScope: this,
-      loop: true,
-    });
-
-    this.time.addEvent({
-      delay: 4000,
-      callback: this.spawn3,
       callbackScope: this,
       loop: true,
     });
@@ -88,12 +81,6 @@ export default class nivel3 extends Phaser.Scene {
     this.enemy2 = this.physics.add.group({
       allowGravity: false,
     })
-    this.enemy3right = this.physics.add.group({
-      allowGravity: false,
-    })
-    this.enemy3left = this.physics.add.group({
-      allowGravity: false,
-    })
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -109,20 +96,6 @@ export default class nivel3 extends Phaser.Scene {
       this.enemy2,
       this.bullets,
       this.reduce2,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3right,
-      this.bullets,
-      this.reduce3right,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3left,
-      this.bullets,
-      this.reduce3left,
       null,
       this
     );
@@ -161,20 +134,6 @@ export default class nivel3 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(
-      this.enemy3right,
-      this.player,
-      this.gameover3right,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3left,
-      this.player,
-      this.gameover3left,
-      null,
-      this
-    );
 
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setViewport(0, 0, 240, 300);
@@ -204,20 +163,6 @@ export default class nivel3 extends Phaser.Scene {
         speed
       );
       this.physics.add.overlap(
-        this.enemy3right,
-        this.bullets,
-        this.reduce3right,
-        null,
-        this
-      );
-      this.physics.add.overlap(
-        this.enemy3left,
-        this.bullets,
-        this.reduce3left,
-        null,
-        this
-      );
-      this.physics.add.overlap(
         this.enemy2,
         this.bullets,
         this.reduce2,
@@ -242,7 +187,7 @@ export default class nivel3 extends Phaser.Scene {
       fill: "#FFFFFF",
     });
     
-    this.stage = 3;
+    this.stage = 2;
 
   }
 
@@ -303,48 +248,6 @@ export default class nivel3 extends Phaser.Scene {
 
   }
 
-  spawn3() {
-    const random = Phaser.Math.RND.between(1, 4);
-
-    if (random == 2) {
-      this.enemy3left.create(-32, 416, "enemy3left")
-      .setScale(1)
-      .setCircle(16, 0, 0)
-      .setBounce(0.8)
-      .setData("life", 10);
-    this.enemy3left.setVelocityX(100);
-    }
-    else {
-      this.enemy3right.create(240, 416, "enemy3right")
-      .setScale(1)
-      .setCircle(16, 0, 0)
-      .setBounce(0.8)
-      .setData("life", 10);
-      this.enemy3right.setVelocityX(-100);
-    }
-
-  }
-
-  reduce3right(enemy3right, bullet){
-    const lifeleft = enemy3right.getData("life") - 1;
-    enemy3right.setData("life", lifeleft);
-    if (lifeleft <= 0) {
-      enemy3right.destroy(true, true);
-      bullet.destroy(true, true);
-      return;
-    }
-    bullet.destroy();
-  }
-  reduce3left(enemy3left, bullet){
-    const lifeleft = enemy3left.getData("life") - 1;
-    enemy3left.setData("life", lifeleft);
-    if (lifeleft <= 0) {
-      enemy3left.destroy(true, true);
-      bullet.destroy(true, true);
-      return;
-    }
-    bullet.destroy();
-  }
   reduce2(enemy2, bullet){
     const lifeleft = enemy2.getData("life") - 1;
     enemy2.setData("life", lifeleft);
@@ -376,16 +279,6 @@ export default class nivel3 extends Phaser.Scene {
   bullet.destroy();
   }
 
-  gameover3right(enemy3right, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
-    });
-  }
-  gameover3left(enemy3left, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
-    });
-  }
   gameover2(enemy2, player) {
     this.scene.start("GameOver", {
       stage: this.stage,

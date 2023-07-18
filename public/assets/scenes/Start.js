@@ -10,7 +10,6 @@ export default class Start extends Phaser.Scene {
       jugar.setInteractive();
       jugar.on("pointerup", () => {
       this.scene.start("Niveles");
-    });
-          
+    }); 
     }
 }

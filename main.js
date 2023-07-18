@@ -1,9 +1,13 @@
 import Win from "./public/assets/scenes/Win.js";
 import GameOver from "./public/assets/scenes/GameOver.js";
+import Nivel1 from "./public/assets/scenes/Nivel1.js";
+import Nivel2 from "./public/assets/scenes/Nivel2.js";
 import Nivel3 from "./public/assets/scenes/Nivel3.js";
 import Start from "./public/assets/scenes/Start.js";
 import Preload from "./public/assets/scenes/preloader.js";
 import Niveles from "./public/assets/scenes/Niveles.js";
+import Infinito from "./public/assets/scenes/Infinito.js";
+import FinalScore from "./public/assets/scenes/FinalScore.js";
 // Create a new Phaser config object
 const config = {
   type: Phaser.AUTO,
@@ -31,7 +35,7 @@ const config = {
   // List of scenes to load
   // Only the first scene will be shown
   // Remember to import the scene before adding it to the list
-  scene: [Preload, Start, Niveles, Nivel3, GameOver, Win],
+  scene: [Preload, Start, Niveles, Nivel1, Nivel2, Nivel3, Infinito, FinalScore, GameOver, Win],
   zoom: 1
 };
 

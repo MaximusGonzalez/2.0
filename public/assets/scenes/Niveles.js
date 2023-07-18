@@ -24,9 +24,9 @@ export default class Niveles extends Phaser.Scene {
       });
 
       const botoninfinito = this.add.image(120, 250, "infinito").setScale(0.7);
-      boton3.setInteractive();
-      boton3.on("pointerup", () => {
-        this.scene.start("infinito");
+      botoninfinito.setInteractive();
+      botoninfinito.on("pointerup", () => {
+        this.scene.start("Infinito");
       });
     }
   }

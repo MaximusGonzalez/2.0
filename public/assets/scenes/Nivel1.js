@@ -1,6 +1,6 @@
-export default class nivel3 extends Phaser.Scene {
+export default class Nivel1 extends Phaser.Scene {
   constructor() {
-    super("nivel3");
+    super("nivel1");
   }
 
   create() {
@@ -8,20 +8,6 @@ export default class nivel3 extends Phaser.Scene {
     this.time.addEvent({
       delay: 500,
       callback: this.spawn1,
-      callbackScope: this,
-      loop: true,
-    });
-
-    this.time.addEvent({
-      delay: 1000,
-      callback: this.spawn2,
-      callbackScope: this,
-      loop: true,
-    });
-
-    this.time.addEvent({
-      delay: 4000,
-      callback: this.spawn3,
       callbackScope: this,
       loop: true,
     });
@@ -85,15 +71,6 @@ export default class nivel3 extends Phaser.Scene {
     this.enemy1 = this.physics.add.group({
       allowGravity: false,
     })
-    this.enemy2 = this.physics.add.group({
-      allowGravity: false,
-    })
-    this.enemy3right = this.physics.add.group({
-      allowGravity: false,
-    })
-    this.enemy3left = this.physics.add.group({
-      allowGravity: false,
-    })
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -102,34 +79,6 @@ export default class nivel3 extends Phaser.Scene {
       this.enemy1,
       this.bullets,
       this.reduce1,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy2,
-      this.bullets,
-      this.reduce2,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3right,
-      this.bullets,
-      this.reduce3right,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3left,
-      this.bullets,
-      this.reduce3left,
-      null,
-      this
-    );
-    this.physics.add.collider(
-      this.enemy2,
-      backgroundLayer6,
-      this.killenemy2,
       null,
       this
     );
@@ -151,27 +100,6 @@ export default class nivel3 extends Phaser.Scene {
       this.enemy1,
       this.player,
       this.gameover1,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy2,
-      this.player,
-      this.gameover2,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3right,
-      this.player,
-      this.gameover3right,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.enemy3left,
-      this.player,
-      this.gameover3left,
       null,
       this
     );
@@ -204,27 +132,6 @@ export default class nivel3 extends Phaser.Scene {
         speed
       );
       this.physics.add.overlap(
-        this.enemy3right,
-        this.bullets,
-        this.reduce3right,
-        null,
-        this
-      );
-      this.physics.add.overlap(
-        this.enemy3left,
-        this.bullets,
-        this.reduce3left,
-        null,
-        this
-      );
-      this.physics.add.overlap(
-        this.enemy2,
-        this.bullets,
-        this.reduce2,
-        null,
-        this
-      );
-      this.physics.add.overlap(
         this.enemy1,
         this.bullets,
         this.reduce1,
@@ -242,8 +149,7 @@ export default class nivel3 extends Phaser.Scene {
       fill: "#FFFFFF",
     });
     
-    this.stage = 3;
-
+    this.stage = 1;
   }
 
   update() {
@@ -291,70 +197,6 @@ export default class nivel3 extends Phaser.Scene {
 
   }
 
-  spawn2() {
-    const randomX = Phaser.Math.RND.between(16, 224);
-
-    this.enemy2.create(randomX, 0, "enemy2")
-      .setScale(1)
-      .setCircle(16, 0, 0)
-      .setBounce(0.8)
-      .setData("life", 10);
-    this.enemy2.setVelocityY(200);
-
-  }
-
-  spawn3() {
-    const random = Phaser.Math.RND.between(1, 4);
-
-    if (random == 2) {
-      this.enemy3left.create(-32, 416, "enemy3left")
-      .setScale(1)
-      .setCircle(16, 0, 0)
-      .setBounce(0.8)
-      .setData("life", 10);
-    this.enemy3left.setVelocityX(100);
-    }
-    else {
-      this.enemy3right.create(240, 416, "enemy3right")
-      .setScale(1)
-      .setCircle(16, 0, 0)
-      .setBounce(0.8)
-      .setData("life", 10);
-      this.enemy3right.setVelocityX(-100);
-    }
-
-  }
-
-  reduce3right(enemy3right, bullet){
-    const lifeleft = enemy3right.getData("life") - 1;
-    enemy3right.setData("life", lifeleft);
-    if (lifeleft <= 0) {
-      enemy3right.destroy(true, true);
-      bullet.destroy(true, true);
-      return;
-    }
-    bullet.destroy();
-  }
-  reduce3left(enemy3left, bullet){
-    const lifeleft = enemy3left.getData("life") - 1;
-    enemy3left.setData("life", lifeleft);
-    if (lifeleft <= 0) {
-      enemy3left.destroy(true, true);
-      bullet.destroy(true, true);
-      return;
-    }
-    bullet.destroy();
-  }
-  reduce2(enemy2, bullet){
-    const lifeleft = enemy2.getData("life") - 1;
-    enemy2.setData("life", lifeleft);
-    if (lifeleft <= 0) {
-      enemy2.destroy(true, true);
-      bullet.destroy(true, true);
-      return;
-    }
-    bullet.destroy();
-  }
   reduce1(enemy1, bullet){
     const lifeleft = enemy1.getData("life") - 1;
     enemy1.setData("life", lifeleft);
@@ -366,9 +208,6 @@ export default class nivel3 extends Phaser.Scene {
     else {bullet.destroy();}
   }
   
-  killenemy2(enemy2, backgroundLayer6) {
-  enemy2.destroy();
-  }
   killenemy1(enemy1, backgroundLayer6) {
     enemy1.destroy();
   }
@@ -376,21 +215,6 @@ export default class nivel3 extends Phaser.Scene {
   bullet.destroy();
   }
 
-  gameover3right(enemy3right, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
-    });
-  }
-  gameover3left(enemy3left, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
-    });
-  }
-  gameover2(enemy2, player) {
-    this.scene.start("GameOver", {
-      stage: this.stage,
-    });
-  }
   gameover1(enemy1, player) {
     this.scene.start("GameOver", {
       stage: this.stage,
