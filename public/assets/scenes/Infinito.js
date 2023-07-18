@@ -309,7 +309,7 @@ export default class Infinito extends Phaser.Scene {
     const random = Phaser.Math.RND.between(1, 4);
 
     if (random == 2) {
-      this.enemy3left.create(-32, 416, "enemy3left")
+      this.enemy3left.create(-32, 416, "Enemy3left")
       .setScale(1)
       .setCircle(16, 0, 0)
       .setBounce(0.8)
@@ -317,7 +317,7 @@ export default class Infinito extends Phaser.Scene {
     this.enemy3left.setVelocityX(100);
     }
     else {
-      this.enemy3right.create(240, 416, "enemy3right")
+      this.enemy3right.create(240, 416, "Enemy3right")
       .setScale(1)
       .setCircle(16, 0, 0)
       .setBounce(0.8)

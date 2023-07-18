@@ -20,10 +20,10 @@ export default class Preload extends Phaser.Scene {
     this.load.image("Props-01", "./public/assets/images/Props-01.png");
     this.load.image("Tiles", "./public/assets/images/Tiles.png");
     this.load.image("gameover", "./public/assets/images/gameover.png");
-    this.load.image("logo", "./public/assets/images/logo.png");
+    this.load.image("Logo", "./public/assets/images/Logo.png");
     this.load.image("win", "./public/assets/images/win.png");
-    this.load.image("enemy3right", "./public/assets/images/enemy3right.png");
-    this.load.image("enemy3left", "./public/assets/images/enemy3left.png");
+    this.load.image("Enemy3right", "./public/assets/images/Enemy3right.png");
+    this.load.image("Enemy3left", "./public/assets/images/Enemy3left.png");
     this.load.image("jugar", "./public/assets/images/boton-jugar.png");
     this.load.image("nivel1", "./public/assets/images/boton-nivel1.png");
     this.load.image("nivel2", "./public/assets/images/boton-nivel2.png");
