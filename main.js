@@ -21,8 +21,8 @@ const config = {
       height: 300,
     },
     max: {
-      width: 240,
-      height: 300,
+      width: 720,
+      height: 900,
     },
   },
   physics: {
